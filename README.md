@@ -13,47 +13,61 @@
 
 ## 🚀 Project Overview
 
-**INFINITE** is a powerful **AI-based Virtual Voice Assistant** developed using Python. It allows users to interact via voice commands — even when the system is **offline**!  
+**INFINITE** is an AI-powered **Virtual Voice Assistant** built in **Python** that enables users to interact with their devices using **voice commands** — even when the system is **offline**! It offers a seamless experience with full functionality in both **online and offline modes**.
 
-🔹 Works with real-time voice input  
-🔹 Handles WhatsApp, insta and all any social media platform automation (send messages, check updates, etc.)  
-🔹 Functions in both **online and offline** modes  
-🔹 Designed for **smart communication, accessibility, and hands-free control**
+🔹 **Real-time voice command recognition**  
+🔹 **Automates social media messaging** (WhatsApp, Instagram, and more)  
+🔹 **Offline mode** with predefined commands  
+🔹 **Hands-free control**, making it perfect for busy multitaskers
 
 ---
 
 ## 🧠 Key Features
 
-- 🎙️ **Voice Command Recognition** (Speech → Text)
-- 💬 **Automated all social media platform Messaging**
-- ⚙️ **Offline Mode with Predefined Commands**
-- 🌐 **Online Mode for Dynamic Actions**
-- 🧪 Smart command handling and error recovery
+- 🎙️ **Voice Command Recognition**: Convert speech to text in real-time.
+- 💬 **Social Media Automation**: Automates messaging on WhatsApp, Instagram, and other platforms.
+- ⚙️ **Offline Mode**: Fully functional offline with predefined commands.
+- 🌐 **Online Mode**: For dynamic actions like fetching updates, sending messages, etc.
+- 🧪 **Smart Error Recovery**: Handles errors with smart fallback commands for a smooth experience.
 
 ---
 
 ## 🔧 Tech Stack
 
-| Technology      | Purpose                          |
-|-----------------|----------------------------------|
-| 🐍 Python        | Core language                    |
-| 🗣️ SpeechRecognition | Voice input and processing       |
-| 🔊 Pyttsx3       | Text-to-speech engine (offline)  |
-| 🌍 PyWhatKit     | WhatsApp message automation      |
-| 🧠 Custom NLP    | Command parsing & intent matching|
+| Technology          | Purpose                             |
+|---------------------|-------------------------------------|
+| 🐍 **Python 3.10**   | Core language for development      |
+| 🗣️ **SpeechRecognition** | Speech-to-text for voice input      |
+| 🔊 **Pyttsx3**       | Offline text-to-speech engine      |
+| 🌍 **PyWhatKit**     | WhatsApp and social media automation|
+| 🧠 **Custom NLP**    | Command parsing & intent matching  |
 
 ---
 
 ## 🖥️ Screenshots (Coming Soon!)
 
-> Will be added once UI/Console views are finalized.
+> Screenshots will be added once UI/console views are finalized.
 
 ---
 
 ## 🛠️ Installation
 
+### Prerequisites
+
+- Python 3.10 or higher
+- A working internet connection (for online mode)
+
+### Steps to Install and Run:
+
 ```bash
+# Clone the repository
 git clone https://github.com/NirajG45/INFINITE-Voice-Assistant.git
+
+# Navigate to the project directory
 cd INFINITE-Voice-Assistant
+
+# Install required dependencies
 pip install -r requirements.txt
+
+# Run the Voice Assistant
 python infinite.py
