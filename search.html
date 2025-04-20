@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>45_Navbar</title>
+  <link rel="stylesheet" href="navbar.css">
+  <!-- Optional: Font Awesome for icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<style>
+  * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.navbar {
+  width: 100%;
+  background-color: #aba7a7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  gap: 15px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Logo */
+.nav-logo {
+  background-color: #fff;
+  width: 55px;
+  height: 55px;
+  min-width: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.nav-logo img {
+  height: 30px;
+  width: 30px;
+  object-fit: contain;
+}
+
+/* Search */
+.nav-search {
+  flex: 1;
+  display: flex;
+  min-width: 240px;
+  max-width: 700px;
+  height: 48px;
+  background: linear-gradient(145deg, #706a6a, #8e8888);
+  border-radius: 25px;
+  overflow: hidden;
+  transition: 0.3s ease;
+}
+
+.nav-search input {
+  flex: 1;
+  padding: 0 15px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.nav-search input::placeholder {
+  color: #e0e0e0;
+}
+
+.search-icons {
+  background-color: rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 0 15px;
+}
+
+.search-icons i {
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.search-icons i:hover {
+  transform: scale(1.1);
+}
+
+/* Right box */
+.nav-box {
+  width: 150px;
+  height: 48px;
+  background: linear-gradient(145deg, #7f7f7f, #9a9a9a);
+  border-radius: 25px;
+  min-width: 100px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-search {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .nav-box {
+    align-self: center;
+  }
+}
+
+</style>
+<body>
+  <div class="navbar">
+    <div class="nav-logo">
+      <img src="logo.png" alt="Logo">
+    </div>
+
+    <div class="nav-search">
+      <input type="text" placeholder="Search here what your want!?">
+      <div class="search-icons">
+        <i class="fas fa-microphone"></i>
+        <i class="fas fa-search"></i>
+      </div>
+    </div>
+
+    <div class="nav-box">
+      <!-- You can add user profile, login button etc -->
+    </div>
+  </div>
+</body>
+</html>
+
