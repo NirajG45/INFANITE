@@ -1,216 +1,217 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>INFANITE - AI Assistant</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
-    :root {
-      --primary-glow: rgba(255, 255, 255, 0.8);
-      --background-dark: radial-gradient(circle, #0a0a0a, #000000);
-      --highlight-red: #ff2c2c;
-      --matte-grey: rgba(160, 160, 160, 0.9);
-      --max-canvas-width: 600px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
     body {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background: var(--background-dark);
-      color: white;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      text-align: center;
-      padding: 5vw 2vw;
+      background-color: black;
       overflow-x: hidden;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 10px;
+      margin: 0;
     }
 
     h1 {
-      font-size: clamp(30px, 6vw, 60px);
+      font-size: clamp(28px, 5vw, 50px);
+      margin: 10px 0;
       letter-spacing: 2px;
-      margin: 1rem 0 0.5rem;
     }
 
     h3 {
-      font-size: clamp(14px, 3vw, 20px);
+      font-size: clamp(12px, 2vw, 16px);
+      margin: 10px 0;
       text-transform: uppercase;
-      margin: 0.5rem 0;
     }
 
-    h3 span,
-    #in,
-    #inn {
-      color: var(--highlight-red);
+    h3 span {
+      color: darkred;
       font-weight: bold;
-      text-shadow: 2px 2px 6px rgba(255, 44, 44, 0.9);
+      text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.8);
     }
 
     #in {
-      font-size: clamp(30px, 6vw, 60px);
+      color: darkred;
+      font-size: clamp(28px, 5vw, 50px);
+      font-weight: bold;
+      text-shadow: 2px 2px 6px rgb(117, 1, 1);
     }
 
     #inn {
-      font-size: clamp(22px, 5vw, 40px);
+      color: darkred;
+      font-size: clamp(20px, 4vw, 35px);
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgb(117, 1, 1);
     }
 
     h2 {
-      font-size: clamp(22px, 5vw, 40px);
-      margin: 1rem 0;
+      font-size: clamp(20px, 4vw, 35px);
+      margin: 10px 0;
     }
 
     canvas {
       display: block;
-      width: 100%;
-      max-width: var(--max-canvas-width);
-      height: auto;
-      margin-top: 1rem;
+      width: 90%;
+      max-height: 50vh;
     }
 
-    .search-container {
-      display: flex;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.95);
-      padding: clamp(10px, 2vw, 15px);
-      border-radius: 25px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      width: min(90%, 450px);
-      margin: 1rem auto;
-      transition: box-shadow 0.3s;
-    }
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1e1e1f;
+  padding: 6px 12px;
+  border-radius: 25px;
+  border: 1px solid #333;
+  width: min(500px, 95%);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.1);
+  gap: 10px;
+  flex-wrap: nowrap;
+}
 
-    .search-container:hover {
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    }
+.search-container input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  font-size: clamp(14px, 2vw, 16px);
+  padding: 10px;
+  min-width: 0;
+}
 
-    .search-container input {
-      flex: 1;
-      border: none;
-      outline: none;
-      padding: clamp(8px, 2vw, 12px);
-      font-size: clamp(14px, 2.5vw, 18px);
-      border-radius: 20px;
-    }
+.search-container .icons {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
 
-    .search-container img {
-      width: clamp(22px, 6vw, 35px);
-      height: clamp(22px, 6vw, 35px);
-      margin-left: clamp(5px, 1vw, 10px);
-      cursor: pointer;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
+.search-container i {
+  color: #ccc;
+  font-size: clamp(16px, 4vw, 20px);
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    .search-container img:hover {
-      transform: scale(1.1);
-      opacity: 0.75;
-    }
+.search-container i:hover {
+  color: white;
+}
 
-    @media (max-width: 500px) {
-      h1, h2, h3 {
-        text-align: center;
-      }
+@media (max-width: 500px) {
+  .search-container {
+    padding: 5px 10px;
+  }
 
-      .search-container {
-        flex-direction: row;
-        width: 95%;
-        padding: 8px;
-      }
+  .search-container input {
+    padding: 8px;
+  }
 
-      .search-container input {
-        font-size: 14px;
-      }
-    }
-  </style>
+  .search-container i {
+    font-size: 16px;
+  }
+}
+</style>
 </head>
-
 <body>
   <h1><span id="in">IN</span>FANITE</h1>
   <h3>Welcome to the <span>Future</span></h3>
   <canvas id="infinityCanvas"></canvas>
   <h2><span id="inn">He</span>llo, everyone</h2>
-
   <div class="search-container">
-    <input type="text" id="search-box" placeholder="Search..." aria-label="Search by text">
-    <img src="E:/phone 45/mice.png" alt="Voice Search Icon" title="Voice Search" onclick="startVoiceSearch()">
-    <img src="E:/phone 45/cam.png" alt="Image Search Icon" title="Image Search">
-    <img src="E:/phone 45/infa.png" alt="Custom Feature Icon" title="Custom Feature">
+  <input type="text" id="search-box" placeholder="Search..." />
+  <div class="icons">
+    <i class="fa fa-microphone" aria-hidden="true" onclick="startVoiceSearch()"></i>
+    <i class="fa fa-camera" aria-hidden="true" onclick="startImageSearch()"></i>
+    <i class="fa fa-search" aria-hidden="true" onclick="startCustomSearch()"></i>
   </div>
+</div>
+
+
   <script>
     const canvas = document.getElementById("infinityCanvas");
     const ctx = canvas.getContext("2d");
-  
-    let angle = 0;
-    const snakeTrail = [];
-    const maxTrailLength = 100;
-    let scaleFactor = 1;
-  
+
     function resizeCanvas() {
-      canvas.width = Math.min(window.innerWidth * 0.9, 600);
+      canvas.width = window.innerWidth * 0.9;
       canvas.height = Math.min(window.innerHeight * 0.4, 300);
-      scaleFactor = Math.min(canvas.width / 400, 1.2);
     }
-  
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    let angle = 0;
+    let snakeTrail = [];
+    const maxTrailLength = 50;
+
     function drawInfinity() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-      // ♾️ Matte Grey Infinity Loop (No Glow)
-      ctx.save();
-      ctx.shadowBlur = 0;
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = "rgba(160, 160, 160, 0.9)";
+
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = "rgba(180, 180, 180, 0.7)";
+
       ctx.beginPath();
-  
       for (let t = 0; t < Math.PI * 2; t += 0.02) {
-        const x = 150 * scaleFactor * Math.sin(t) / (1 + Math.cos(t) ** 2) + canvas.width / 2;
-        const y = 150 * scaleFactor * Math.sin(t) * Math.cos(t) / (1 + Math.cos(t) ** 2) + canvas.height / 2;
-        t === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        let x = 150 * Math.sin(t) / (1 + Math.cos(t) ** 2) + canvas.width / 2;
+        let y = 150 * Math.sin(t) * Math.cos(t) / (1 + Math.cos(t) ** 2) + canvas.height / 2;
+        if (t === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       }
-  
       ctx.stroke();
-      ctx.restore();
-  
-      // 🔘 White Glowing Entity Trail
-      const movingT = angle % (Math.PI * 2);
-      const movingX = 150 * scaleFactor * Math.sin(movingT) / (1 + Math.cos(movingT) ** 2) + canvas.width / 2;
-      const movingY = 150 * scaleFactor * Math.sin(movingT) * Math.cos(movingT) / (1 + Math.cos(movingT) ** 2) + canvas.height / 2;
-  
+
+      let movingT = angle % (Math.PI * 2);
+      let movingX = 150 * Math.sin(movingT) / (1 + Math.cos(movingT) ** 2) + canvas.width / 2;
+      let movingY = 150 * Math.sin(movingT) * Math.cos(movingT) / (1 + Math.cos(movingT) ** 2) + canvas.height / 2;
+
       snakeTrail.push({ x: movingX, y: movingY });
-      if (snakeTrail.length > maxTrailLength) snakeTrail.shift();
-  
+      if (snakeTrail.length > maxTrailLength) {
+        snakeTrail.shift();
+      }
+
       for (let i = 0; i < snakeTrail.length; i++) {
-        const opacity = (i + 1) / snakeTrail.length;
-        const gradient = ctx.createRadialGradient(
-          snakeTrail[i].x, snakeTrail[i].y, 0,
-          snakeTrail[i].x, snakeTrail[i].y, 6
+        let opacity = (i + 1) / snakeTrail.length;
+        let gradient = ctx.createRadialGradient(
+          snakeTrail[i].x,
+          snakeTrail[i].y,
+          0,
+          snakeTrail[i].x,
+          snakeTrail[i].y,
+          8
         );
-        gradient.addColorStop(0, `rgba(255,255,255,${opacity})`);
-        gradient.addColorStop(0.5, `rgba(255,255,255,${opacity * 0.5})`);
-        gradient.addColorStop(1, `rgba(255,255,255,0)`);
-  
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
+        gradient.addColorStop(0.5, `rgba(255, 255, 255, ${opacity * 0.8})`);
+        gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
         ctx.fillStyle = gradient;
         ctx.beginPath();
-        ctx.arc(snakeTrail[i].x, snakeTrail[i].y, 3, 0, Math.PI * 2);
+        ctx.arc(snakeTrail[i].x, snakeTrail[i].y, 6, 0, Math.PI * 2);
         ctx.fill();
       }
-  
-      angle += 0.012;
-      requestAnimationFrame(drawInfinity);
+
+      angle += 0.03;
+      setTimeout(drawInfinity, 16);
     }
-  
-    function startVoiceSearch() {
-      alert("Voice search feature coming soon!");
-    }
-  
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+
     drawInfinity();
-  </script>  
+
+    function startVoiceSearch() {
+      alert("Voice Search Clicked (Functionality Coming Soon!)");
+    }
+
+    function startImageSearch() {
+      alert("Image Search Clicked (Functionality Coming Soon!)");
+    }
+
+    function startCustomSearch() {
+      alert("Custom Feature Clicked (Functionality Coming Soon!)");
+    }
+  </script>
 </body>
 </html>

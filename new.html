@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>INFANITE - AI Assistant</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: black;
+      overflow-x: hidden;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 10px;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 50px);
+      margin: 10px 0;
+      letter-spacing: 2px;
+    }
+
+    h3 {
+      font-size: clamp(12px, 2vw, 16px);
+      margin: 10px 0;
+      text-transform: uppercase;
+    }
+
+    h3 span {
+      color: darkred;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.8);
+    }
+
+    #in {
+      color: darkred;
+      font-size: clamp(28px, 5vw, 50px);
+      font-weight: bold;
+      text-shadow: 2px 2px 6px rgb(117, 1, 1);
+    }
+
+    #inn {
+      color: darkred;
+      font-size: clamp(20px, 4vw, 35px);
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgb(117, 1, 1);
+    }
+
+    h2 {
+      font-size: clamp(20px, 4vw, 35px);
+      margin: 10px 0;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      max-width: 700px;
+      height: auto;
+      max-height: 70vh; /* Increased height to ensure the loop is bigger */
+      margin: 10px 0;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      background-color: black;
+      padding: 10px;
+      border-radius: 25px;
+      border: 2px solid #333;
+      width: min(400px, 90%);
+      transition: 0.3s;
+      flex-wrap: nowrap;
+      overflow: hidden;
+      position: relative;
+      z-index: 10;
+    }
+
+    .search-container input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px;
+      font-size: clamp(14px, 2vw, 18px);
+      border-radius: 20px;
+      min-width: 0;
+      background-color: #222;
+      color: white;
+    }
+
+    .search-container i {
+      font-size: clamp(20px, 5vw, 24px);
+      margin-left: 10px;
+      color: white;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .search-container i:hover {
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+
+    @media (max-width: 500px) {
+      .search-container {
+        width: 95%;
+        padding: 8px;
+      }
+
+      .search-container input {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      .search-container i {
+        font-size: 20px;
+        margin-left: 8px;
+      }
+    }
+
+    /* Ensuring input doesn't get hidden under keyboard on mobile */
+    input:focus {
+      outline: none;
+      background-color: #444;
+    }
+    
+    /* For small screens */
+    @media (max-width: 600px) {
+      body {
+        padding-bottom: 100px; /* Create space for keyboard */
+      }
+
+      .search-container {
+        position: sticky;
+        bottom: 15px; /* Make sure search bar sticks above keyboard */
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1><span id="in">IN</span>FANITE</h1>
+  <h3>Welcome to the <span>Future</span></h3>
+  <canvas id="infinityCanvas"></canvas>
+  <h2><span id="inn">He</span>llo, everyone</h2>
+
+  <div class="search-container">
+    <input type="text" id="search-box" placeholder="Search..." />
+    <i class="fa fa-microphone" onclick="startVoiceSearch()"></i>
+    <i class="fa fa-camera" onclick="startImageSearch()"></i>
+    <i class="fa fa-search" onclick="startCustomSearch()"></i>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("infinityCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+
+    let angle = 0;
+    let trail = [];
+    const maxTrail = 60;
+
+    function drawInfinity() {
+      resizeCanvas();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const w = canvas.width;
+      const h = canvas.height;
+      const scale = Math.min(w, h) / 2.2;  // Adjusted scaling factor to make it bigger
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "rgba(169, 169, 169, 0.8)"; /* Bright grey color */
+      ctx.beginPath();
+
+      for (let t = 0; t <= Math.PI * 2; t += 0.02) {
+        const x = scale * Math.sin(t) / (1 + Math.cos(t) ** 2) + w / 2;
+        const y = scale * Math.sin(t) * Math.cos(t) / (1 + Math.cos(t) ** 2) + h / 2;
+        if (t === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      const t = angle % (Math.PI * 2);
+      const x = scale * Math.sin(t) / (1 + Math.cos(t) ** 2) + w / 2;
+      const y = scale * Math.sin(t) * Math.cos(t) / (1 + Math.cos(t) ** 2) + h / 2;
+
+      trail.push({ x, y });
+      if (trail.length > maxTrail) trail.shift();
+
+      for (let i = 0; i < trail.length; i++) {
+        const point = trail[i];
+        const opacity = (i + 1) / trail.length;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(169, 169, 169, ${opacity})`; /* Bright grey trail */
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = "rgba(169,169,169,0.4)"; /* Bright grey shadow */
+        ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.shadowBlur = 0; // reset shadow
+      }
+
+      angle += 0.03;
+      requestAnimationFrame(drawInfinity);
+    }
+
+    drawInfinity();
+    window.addEventListener("resize", resizeCanvas);
+
+    function startVoiceSearch() {
+      alert("Voice search activated.");
+    }
+
+    function startImageSearch() {
+      alert("Image search activated.");
+    }
+
+    function startCustomSearch() {
+      alert("Custom search activated.");
+    }
+  </script>
+</body>
+</html>

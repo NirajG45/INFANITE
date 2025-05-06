@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INFANITE - AI Assistant</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --main-red: darkred;
+      --bg-black: #000;
+      --input-bg: #222;
+      --border-color: #333;
+      --text-white: #fff;
+      --gray: rgba(169, 169, 169, 0.8);
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: var(--text-white);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      overflow-x: hidden;
+    }
+
+    .header {
+      text-align: center;
+      transition: all 0.8s ease;
+    }
+
+    .header.move-top-left {
+      position: fixed;
+      top: 10px;
+      left: 20px;
+      text-align: left;
+      transform: scale(0.8);
+      z-index: 1000;
+    }
+
+    .header h1 {
+      font-size: clamp(24px, 6vw, 48px);
+      margin: 10px 0;
+      letter-spacing: 2px;
+    }
+
+    .header h3 {
+      font-size: clamp(12px, 3vw, 16px);
+      margin: 10px 0;
+      text-transform: uppercase;
+    }
+
+    .header h3 span {
+      color: var(--main-red);
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.8);
+    }
+
+    #in {
+      color: var(--main-red);
+      font-weight: bold;
+      text-shadow: 2px 2px 6px rgb(117, 1, 1);
+    }
+
+    #inn {
+      color: var(--main-red);
+      font-size: clamp(18px, 5vw, 32px);
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgb(117, 1, 1);
+    }
+
+    .canvas-wrapper {
+      text-align: center;
+      transition: all 0.8s ease;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .canvas-wrapper.move-top-right {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 120px;
+      height: 120px;
+      z-index: 999;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: clamp(20px, 5vw, 32px);
+      margin: 10px 0;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      background-color: var(--bg-black);
+      padding: 10px;
+      border-radius: 25px;
+      border: 2px solid var(--border-color);
+      width: min(600px, 95%);
+      margin: 20px auto;
+      gap: 10px;
+      flex-wrap: nowrap;
+      box-sizing: border-box;
+    }
+
+    .search-container input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px;
+      font-size: clamp(14px, 4vw, 18px);
+      border-radius: 20px;
+      min-width: 0;
+      background-color: var(--input-bg);
+      color: white;
+    }
+
+    .search-container i {
+      font-size: clamp(18px, 5vw, 22px);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s, opacity 0.3s;
+      flex-shrink: 0;
+    }
+
+    .search-container i:hover {
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+
+    #output {
+      text-align: center;
+      margin-top: 20px;
+      font-size: clamp(16px, 3vw, 22px);
+      color: lightgray;
+      min-height: 40px;
+      padding: 0 10px;
+    }
+
+    @media (max-width: 600px) {
+      .search-container {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 5px;
+      }
+
+      .search-container i {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header" id="header">
+    <h1><span id="in">IN</span>FANITE</h1>
+    <h3>Welcome to the <span>Future</span></h3>
+  </div>
+
+  <div class="canvas-wrapper" id="canvasWrapper">
+    <canvas id="infinityCanvas"></canvas>
+  </div>
+
+  <h2><span id="inn">He</span>llo, everyone</h2>
+
+  <div class="search-container">
+    <input type="text" id="search-box" placeholder="Search..." />
+    <i class="fa fa-microphone" onclick="startVoiceSearch()"></i>
+    <i class="fa fa-camera" onclick="startImageSearch()"></i>
+    <i class="fa fa-search" onclick="startCustomSearch()"></i>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    const canvas = document.getElementById("infinityCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+
+    let angle = 0;
+    let trail = [];
+    const maxTrail = 60;
+
+    function drawInfinity() {
+      resizeCanvas();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const w = canvas.width;
+      const h = canvas.height;
+      const scale = Math.min(w, h) / 2.2;
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "rgba(169, 169, 169, 0.8)";
+      ctx.beginPath();
+
+      for (let t = 0; t <= Math.PI * 2; t += 0.02) {
+        const x = scale * Math.sin(t) / (1 + Math.cos(t) ** 2) + w / 2;
+        const y = scale * Math.sin(t) * Math.cos(t) / (1 + Math.cos(t) ** 2) + h / 2;
+        if (t === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      const t = angle % (Math.PI * 2);
+      const x = scale * Math.sin(t) / (1 + Math.cos(t) ** 2) + w / 2;
+      const y = scale * Math.sin(t) * Math.cos(t) / (1 + Math.cos(t) ** 2) + h / 2;
+
+      trail.push({ x, y });
+      if (trail.length > maxTrail) trail.shift();
+
+      for (let i = 0; i < trail.length; i++) {
+        const point = trail[i];
+        const opacity = (i + 1) / trail.length;
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(169, 169, 169, ${opacity})`;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = "rgba(169,169,169,0.4)";
+        ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      angle += 0.015;
+      requestAnimationFrame(drawInfinity);
+    }
+
+    drawInfinity();
+    window.addEventListener("resize", resizeCanvas);
+
+    function startVoiceSearch() {
+      document.getElementById("output").textContent = "Voice search activated.";
+    }
+
+    function startImageSearch() {
+      document.getElementById("output").textContent = "Image search activated.";
+    }
+
+    function startCustomSearch() {
+      const header = document.getElementById("header");
+      const canvasWrapper = document.getElementById("canvasWrapper");
+      header.classList.add("move-top-left");
+      canvasWrapper.classList.add("move-top-right");
+
+      const query = document.getElementById("search-box").value;
+      document.getElementById("output").textContent = `Showing results for: "${query}"`;
+    }
+  </script>
+</body>
+</html>
