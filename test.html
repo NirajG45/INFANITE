@@ -74,13 +74,6 @@
       text-shadow: 2px 2px 6px rgb(117, 1, 1);
     }
 
-    #inn {
-      color: var(--main-red);
-      font-size: clamp(18px, 5vw, 32px);
-      font-weight: bold;
-      text-shadow: 2px 2px 5px rgb(117, 1, 1);
-    }
-
     .canvas-wrapper {
       transition: all 0.8s ease;
       max-width: 700px;
@@ -92,8 +85,8 @@
       position: fixed;
       top: 10px;
       right: 10px;
-      width: 120px;
-      height: 120px;
+      width: 150px;
+      height: 150px;
       z-index: 999;
     }
 
@@ -101,11 +94,6 @@
       display: block;
       width: 100%;
       height: auto;
-    }
-
-    h2 {
-      font-size: clamp(20px, 5vw, 32px);
-      margin: 20px 0 10px;
     }
 
     .search-wrapper {
@@ -156,6 +144,9 @@
     }
 
     #output {
+  position: relative;
+  order: -1;
+
       text-align: center;
       margin-top: 20px;
       font-size: clamp(16px, 3vw, 22px);
@@ -183,8 +174,6 @@
     <div class="canvas-wrapper" id="canvasWrapper">
       <canvas id="infinityCanvas"></canvas>
     </div>
-
-    <h2><span id="inn">He</span>llo, everyone</h2>
   </div>
 
   <div class="search-wrapper">
@@ -209,7 +198,7 @@
 
     let angle = 0;
     let trail = [];
-    const maxTrail = 60;
+    const maxTrail = 160; // Increased trail
 
     function drawInfinity() {
       resizeCanvas();
@@ -218,6 +207,7 @@
       const w = canvas.width;
       const h = canvas.height;
       const scale = Math.min(w, h) / 2.2;
+      const dotRadius = Math.max(2, scale * 0.045); // Radius adjusts to loop size
 
       ctx.lineWidth = 2;
       ctx.strokeStyle = "rgba(169, 169, 169, 0.8)";
@@ -245,7 +235,7 @@
         ctx.fillStyle = `rgba(169, 169, 169, ${opacity})`;
         ctx.shadowBlur = 10;
         ctx.shadowColor = "rgba(169,169,169,0.4)";
-        ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
+        ctx.arc(point.x, point.y, dotRadius, 0, 2 * Math.PI);
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -274,6 +264,14 @@
       const query = document.getElementById("search-box").value;
       document.getElementById("output").textContent = `Showing results for: "${query}"`;
     }
-  </script>
+  
+document.getElementById("search-box").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    startCustomSearch();
+  }
+});
+
+</script>
 </body>
 </html>
