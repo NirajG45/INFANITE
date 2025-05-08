@@ -144,8 +144,9 @@
     }
 
     #output {
-      position: relative;
-      order: -1;
+  position: relative;
+  order: -1;
+
       text-align: center;
       margin-top: 20px;
       font-size: clamp(16px, 3vw, 22px);
@@ -186,54 +187,36 @@
   </div>
 
   <script>
-    // 🔍 Custom search fetch from backend
+    // this is for custom search
     function startCustomSearch() {
-      const header = document.getElementById("header");
-      const canvasWrapper = document.getElementById("canvasWrapper");
-      header.classList.add("move-top-left");
-      canvasWrapper.classList.add("move-top-right");
+    const header = document.getElementById("header");
+    const canvasWrapper = document.getElementById("canvasWrapper");
+    header.classList.add("move-top-left");
+    canvasWrapper.classList.add("move-top-right");
 
-      const query = document.getElementById("search-box").value;
-      const output = document.getElementById("output");
+    const query = document.getElementById("search-box").value;
+    const output = document.getElementById("output");
 
-      output.textContent = "Thinking...";
+    output.textContent = "Thinking...";
 
-      fetch('http://localhost:5000/ask', {
+    fetch('http://localhost:5000/ask', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
         },
         body: JSON.stringify({ question: query })
-      })
-      .then(response => response.json())
-      .then(data => {
+    })
+    .then(response => response.json())
+    .then(data => {
         output.textContent = data.answer;
-      })
-      .catch(error => {
+    })
+    .catch(error => {
         console.error('Error:', error);
         output.textContent = "Sorry, something went wrong.";
-      });
-    }
-
-    // 🎤 Voice search
-    function startVoiceSearch() {
-      document.getElementById("output").textContent = "Voice search activated.";
-    }
-
-    // 📷 Image search
-    function startImageSearch() {
-      document.getElementById("output").textContent = "Image search activated.";
-    }
-
-    // ⌨️ Enter key listener
-    document.getElementById("search-box").addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        startCustomSearch();
-      }
     });
+    }
 
-    // ♾️ Infinity canvas animation
+// this is for infinity loop animation
     const canvas = document.getElementById("infinityCanvas");
     const ctx = canvas.getContext("2d");
 
@@ -245,7 +228,7 @@
 
     let angle = 0;
     let trail = [];
-    const maxTrail = 160;
+    const maxTrail = 160; // Increased trail
 
     function drawInfinity() {
       resizeCanvas();
@@ -254,7 +237,7 @@
       const w = canvas.width;
       const h = canvas.height;
       const scale = Math.min(w, h) / 2.2;
-      const dotRadius = Math.max(2, scale * 0.045);
+      const dotRadius = Math.max(2, scale * 0.045); // Radius adjusts to loop size
 
       ctx.lineWidth = 2;
       ctx.strokeStyle = "rgba(169, 169, 169, 0.8)";
@@ -293,6 +276,32 @@
 
     drawInfinity();
     window.addEventListener("resize", resizeCanvas);
-  </script>
+
+    function startVoiceSearch() {
+      document.getElementById("output").textContent = "Voice search activated.";
+    }
+
+    function startImageSearch() {
+      document.getElementById("output").textContent = "Image search activated.";
+    }
+
+    function startCustomSearch() {
+      const header = document.getElementById("header");
+      const canvasWrapper = document.getElementById("canvasWrapper");
+      header.classList.add("move-top-left");
+      canvasWrapper.classList.add("move-top-right");
+
+      const query = document.getElementById("search-box").value;
+      document.getElementById("output").textContent = `Showing results for: "${query}"`;
+    }
+  
+document.getElementById("search-box").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    startCustomSearch();
+  }
+});
+
+</script>
 </body>
 </html>
